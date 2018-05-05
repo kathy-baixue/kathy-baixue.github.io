@@ -42,14 +42,14 @@ session.go中的一些主要的方法简介。
 session.Execute|按步骤执行SQL语句|Method on session;implement interface Session|session.go|Struct session in session.go.Interface Session in session.go|
 session.ParseSQL；compiler.Compile；session.executeStatement|解析SQL语句,生成ast.StmtNode；对AST进行验证、优化,将ast.StmtNode编译成physical plan；执行physical plan|Method on session;Method on Compiler;|session.go;executor/compiler.go;session.go|/; Struct Compiler in executor/compiler.go;/ |
 
-###2.2 制定查询计划以及优化（AST to plan） ###
+### 2.2 制定查询计划以及优化（AST to plan） ###
 将ast.DeleteStmt结构转换为plan.Delete结构。
 
 具体在planBuilder. build ()中完成，针对delete由planBuilder.buildDelete（）完成。
 
 涉及的源码：plan/planbuilder.go。planBuilder.buildDelete方法定义见plan/logical_plan_builder.go。
 
-###2.3生成执行器（plan to Executor ）###
+### 2.3生成执行器（plan to Executor ）###
 将plan.Delete结构转换为executor.DeleteExec结构。由executorBuilder.buildDelete实现，代码见executor/builder.go，定义语句如下：func (b *executorBuilder) buildDelete(v *plan.Delete) Executor {…}。在生成执行器DeleteExec的过程中，生成查询执行器SeleteExec，语句如下：selExec := b.build(v.SelectPlan)，执行器SelectExec封装在DeleteExec中：
  
     deleteExec := &DeleteExec{
